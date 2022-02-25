@@ -18,11 +18,30 @@
         </td>
         <td><%= book.body %>
         </td>
-    <!--コメント機能追加-->
+        
+<!--以下いいね機能-->
+          <td><% if book.favorited_by?(current_user) %>
+          <p>
+          <%= link_to book_favorites_path(book), method: :delete do %>
+          ♥<%= book.favorites.count %> いいね
+          <% end %>
+          </p>
+          <% else %>
+          <p>
+          <%= link_to book_favorites_path(book), method: :post do %>
+          ♡<%= book.favorites.count %> いいね
+          <% end %>
+          </p>
+          <% end %>
+          </td>
+<!--ここまでいいね機能-->
+        
+        
+<!--ここからコメント機能追加-->
         <td>
           <%= link_to "#{book.book_comments.count} コメント", book_path(book.id) %>
         </td>
-    <!--コメント機能追加-->
+<!--ここまでコメント機能追加-->
       </tr>
     <% end %>
   </tbody>
