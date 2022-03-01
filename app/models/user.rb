@@ -8,6 +8,19 @@ class User < ApplicationRecord
   has_many :book_comments, dependent: :destroy
   has_many :favorites, dependent: :destroy
   has_one_attached :profile_image
+  
+  # フォロー機能のリレーション
+  has_many :relationships, foreign_key: "followed_id", dependent: :destroy
+  has_many :followeds, through: :relationships, source: :follower
+  has_many :revers_of_relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
+  has_many :followers, through: :revers_of_relationships, source: :followed
+  
+  # あるユーザが引数で渡されたuserにフォローされているか調べるメソッド
+  def is_followed_by?(user)
+    revers_of_relationships.find_by(followed_id: user.id).present?
+  end
+
+
 
   validates :name, length: { minimum: 2, maximum: 20 }, uniqueness: true
   validates :introduction, length: { maximum: 50 }
