@@ -28,12 +28,16 @@
             class: "btn btn-sm btn-danger destroy_book_#{@book.id}"%></td>
             <% end %>
             <!--以下いいね機能-->
-            <td><%= render 'favorites/favorite', book: @book %></td>
+            <td class=<%= "favorite-" + @book.id.to_s %> >
+            <%= render 'favorites/favorite', book: @book %></td>
             <!--ここまでいいね機能-->
             <td>コメント件数：<%= @book.book_comments.count %></td>
         </tr>
       </table>
       <!--コメント一覧機能-->
-       <div class = "book_comments"><%= render 'book_comments/book_comment', book: @book, book_comment: @book_comment %></div>
+      <div class="book-comments-index">
+        <%= render "book_comments/index", book: @book %>
+      </div>
+      <%= render "book_comments/form", book: @book, book_comment: @book_comment %>
     </div>
   </div>
